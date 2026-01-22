@@ -1,0 +1,67 @@
+@startuml
+
+' Permite mezclar elementos de despliegue y ER
+allow_mixing
+
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundcorner 10
+skinparam backgroundColor #FDFDFD
+
+' --- ESTILOS ---
+skinparam node {
+    BackgroundColor #E3F2FD
+    BorderColor #1565C0
+}
+
+' Usamos estilo de paquete para simular la DB visualmente
+skinparam rectangle {
+    BackgroundColor #E8F5E9
+    BorderColor #2E7D32
+}
+
+skinparam entity {
+    BackgroundColor #FFF3E0
+    BorderColor #EF6C00
+}
+
+' --- DEFINICIÓN DEL DIAGRAMA ---
+
+node "Database Server (Linux/Ubuntu)" as dbServer <<Device>> {
+    
+    ' Usamos rectangle con estereotipo para evitar errores de sintaxis
+    ' al definir campos complejos dentro
+    rectangle "VetClinic_DB (PostgreSQL)" as db <<Database>> {
+        
+        entity "owners" as owners {
+            * id : uuid <<PK>>
+            --
+            * name : varchar(255)
+            * document : varchar(255)
+            * created : timestamptz
+            updated : timestamptz
+        }
+
+        entity "pets" as pets {
+            * id : uuid <<PK>>
+            --
+            * owner_id : uuid <<FK>>
+            * created : timestamptz
+            name : varchar(255)
+            updated : timestamptz
+        }
+    }
+}
+
+' --- RELACIONES Y NOTAS ---
+
+' Nota corregida: Se coloca FUERA de la definición del nodo
+note right of dbServer
+    IP: 10.0.0.5
+    Role: Primary DB
+end note
+
+' Relación entre tablas
+owners ||..|{ pets : "1:N"
+
+@enduml

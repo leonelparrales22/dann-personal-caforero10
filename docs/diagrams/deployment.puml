@@ -1,0 +1,15 @@
+@startuml
+
+frame "aws" {
+    frame "ec2" {
+        node "node1" {
+           component "application" as app
+           component "apigateway" as apigateway
+           app --> apigateway
+        }
+    }
+}
+
+note top of app : Mi aplicación
+
+@enduml

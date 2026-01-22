@@ -1,0 +1,21 @@
+@startuml
+
+skinparam componentStyle uml1
+
+component "Application1" as application1
+component "Application2" as application2
+component "Application3" as application3
+component "Application4" as application4
+component "Proxy" as proxy
+
+
+interface "http" as app1interface
+app1interface - application1
+application2 --> app1interface
+
+application1 --> proxy
+application2 --> proxy
+application3 --> proxy
+application4 --> proxy
+
+@enduml
